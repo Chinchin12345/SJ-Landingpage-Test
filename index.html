@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Backbone — Physical Infrastructure Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── Design Tokens ──────────────────────────────────────────── */
+    :root {
+      --color-primary:        #1257fd;
+      --color-primary-hover:  #2868ff;
+      --color-primary-dark:   #0c38a2;
+      --color-bg:             #111111;
+      --color-text-primary:   #fafafa;
+      --color-text-secondary: #eeeeee;
+      --color-text-muted:     #7b7b7b;
+      --color-nav-surface:    #232225;
+      --color-border-subtle:  #313131;
+      --color-border:         #484848;
+
+      --font-heading: 'Aptos', 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+      --radius-nav: 16px;
+      --radius-img: 12px;
+      --radius-btn: 10px;
+      --btn-height: 48px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--color-bg);
+      color: var(--color-text-primary);
+      font-family: var(--font-heading);
+    }
+
+    /* ─── Hero Section ───────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 1440px;
+      height: 980px;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      overflow: hidden;
+    }
+
+    /* ─── Navigation ─────────────────────────────────────────────── */
+    .nav {
+      position: absolute;
+      top: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1280px;
+      height: 64px;
+      background: rgba(35, 34, 37, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: var(--radius-nav);
+      border: 1px solid rgba(255, 255, 255, 0.031);
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      z-index: 10;
+    }
+
+    .nav-logo {
+      width: 303px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-wordmark {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.25px;
+      color: var(--color-text-primary);
+      font-family: var(--font-heading);
+    }
+
+    .nav-links {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #a8a8b0;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: color 0.15s ease, background 0.15s ease;
+      letter-spacing: 0.008em;
+      font-family: var(--font-heading);
+    }
+
+    .nav-links a:hover {
+      color: var(--color-text-primary);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--color-text-primary);
+    }
+
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ─── Buttons ────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--btn-height);
+      padding: 0 20px;
+      border-radius: var(--radius-btn);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: var(--font-heading);
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      white-space: nowrap;
+      transition:
+        background    0.15s ease,
+        box-shadow    0.15s ease,
+        transform     0.1s  ease,
+        border-color  0.15s ease,
+        color         0.15s ease;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    /* Primary — filled blue */
+    .btn-primary {
+      background: var(--color-primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+      box-shadow:
+        0 0 0 1px rgba(18, 87, 253, 0.45),
+        0 4px 20px rgba(18, 87, 253, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      background: var(--color-primary-dark);
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    /* Outline — ghost */
+    .btn-outline {
+      background: transparent;
+      color: #c0c0c8;
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.055);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--color-text-primary);
+    }
+
+    .btn-outline:active {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ─── Hero Visual ────────────────────────────────────────────── */
+    /* Hero image: 926×496px per spec, bottom at y:716px */
+    .hero-visual {
+      position: absolute;
+      top: 220px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 926px;
+      height: 496px;
+      z-index: 3; /* sits above hero-content */
+    }
+
+    .hero-visual img {
+      display: block;
+      width: 926px;
+      height: 496px;
+      object-fit: contain;
+    }
+
+    /* ─── Hero Content ───────────────────────────────────────────── */
+    .hero-content {
+      position: absolute;
+      /* image bottom = 220 + 496 = 716px; overlap 56px → text at 716 - 56 = 660px */
+      top: 660px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1062px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-heading);
+      font-size: 82px;
+      font-weight: 600;
+      font-style: normal;
+      text-transform: uppercase;
+      color: var(--color-text-primary);
+      line-height: 0.97;
+      letter-spacing: -2px;
+      margin-bottom: 26px;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      width: 598px;
+      max-width: 598px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* ─── Section 2: Marquee ─────────────────────────────────────── */
+
+    /*
+     * Scroll-driven marquee:
+     * The wrapper is taller than the section — this creates "scroll room".
+     * The section sticks to the top; JS maps the extra scroll distance
+     * to a horizontal translateX on the track.
+     */
+    .marquee-scroll-wrapper {
+      position: relative;
+      /* 980px visible section + 2200px of scroll travel */
+      height: calc(980px + 2200px);
+      width: 1440px;
+    }
+
+    .marquee-section {
+      position: sticky;
+      top: 0;
+      width: 1440px;
+      height: 980px;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      /* Smooth bg transition when color flips */
+      transition: background-color 0.55s ease, border-color 0.55s ease;
+    }
+
+    /* Blue state — triggered when "ASSETS" reaches left edge */
+    .marquee-section.is-blue {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary-dark);
+    }
+
+    /* Left/right edge vignette — two real divs so color can transition */
+    .marquee-vignette {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 160px;
+      z-index: 2;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .marquee-vignette-left  { left:  0; background: linear-gradient(to right, #111111 0%, transparent 100%); }
+    .marquee-vignette-right { right: 0; background: linear-gradient(to left,  #111111 0%, transparent 100%); }
+
+    /* Hide dark vignette once bg is blue (prevents dark smear over blue) */
+    .marquee-section.is-blue .marquee-vignette { opacity: 0; }
+
+    /* Track — holds two copies for seamless loop, driven by JS */
+    .marquee-track {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      white-space: nowrap;
+      will-change: transform;
+      /* No CSS animation — transform is set by scroll JS */
+    }
+
+    /* Single text unit — repeated twice */
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      padding-left: 97px;
+      flex-shrink: 0;
+    }
+
+    .marquee-text {
+      font-family: var(--font-heading);
+      font-size: 240px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--color-text-primary);
+      line-height: 1.0;
+      white-space: nowrap;
+      letter-spacing: -4px;
+      user-select: none;
+    }
+
+    /* Separator dot between repeats */
+    .marquee-sep {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: var(--color-text-primary);
+      border-radius: 50%;
+      margin: 0 96px;
+      flex-shrink: 0;
+      position: relative;
+      top: -10px; /* optical cap-height alignment */
+    }
+
+    /* Reduced-motion: keep text static */
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track { transform: translateX(0) !important; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ANIMATIONS & POLISH
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* ─── 1. Keyframes ───────────────────────────────────────────── */
+    @keyframes anim-fade {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes anim-fade-up {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* ─── 2. Page-load entry (hero elements) ─────────────────────── */
+
+    /* Use opacity-only for nav + hero-visual
+       (they already have translateX(-50%) — JS parallax will own transform) */
+    .nav {
+      animation: anim-fade 0.8s ease-out 0ms both;
+    }
+    .hero-visual {
+      animation: anim-fade 0.8s ease-out 200ms both;
+    }
+
+    /* translateY-safe elements (no existing transform) */
+    .hero-h1 {
+      animation: anim-fade-up 0.8s ease-out 400ms both;
+    }
+    .hero-subtitle {
+      animation: anim-fade-up 0.8s ease-out 600ms both;
+    }
+
+    /* ─── 3. Scroll-triggered fade-in (IntersectionObserver) ─────── */
+    .anim-observe {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease-out, transform 0.75s ease-out;
+    }
+    .anim-observe.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger solution tags individually */
+    .solution-tags [role="listitem"]:nth-child(1),
+    .solution-tags .solution-tag-sep:nth-child(2) { transition-delay:   0ms; }
+    .solution-tags [role="listitem"]:nth-child(3),
+    .solution-tags .solution-tag-sep:nth-child(4) { transition-delay: 100ms; }
+    .solution-tags [role="listitem"]:nth-child(5)  { transition-delay: 200ms; }
+
+    /* ─── 4. Hover — solution info box ───────────────────────────── */
+    .solution-info {
+      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .solution-info:hover {
+      transform: translateY(-5px);
+    }
+
+    /* ─── 5. Buttons — improve active press ─────────────────────── */
+    .btn-primary:active {
+      background: var(--color-primary-dark);
+      transform: scale(0.96);
+      box-shadow: none;
+    }
+    .btn-outline:active {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(0.96);
+    }
+
+    /* ─── 6. Nav links — slightly stronger hover bg ──────────────── */
+    .nav-links a:hover {
+      background: #262626;
+      color: var(--color-text-primary);
+    }
+
+    /* ─── 7. Smooth scroll ──────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+
+    /* ─── 8. Reduced-motion overrides ───────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .nav,
+      .hero-visual,
+      .hero-h1,
+      .hero-subtitle   { animation: none; opacity: 1; }
+
+      .anim-observe    { opacity: 1; transform: none; transition: none; }
+      .solution-info   { transition: none; }
+      .btn             { transition: background 0.15s ease, color 0.15s ease; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE LAYOUT
+       Desktop 1440px → Tablet 900px → Mobile 480px
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* ─── CSS vars that scale with breakpoint ────────────────────── */
+    :root {
+      --mq-h:      980px;   /* marquee section height       */
+      --mq-travel: 2200px;  /* marquee scroll travel (must match JS) */
+      --mq-font:   240px;   /* marquee font size            */
+      --mq-ls:     -4px;    /* marquee letter-spacing       */
+    }
+
+    /* ─── Sections: full viewport width at all sizes ─────────────── */
+    .hero,
+    .marquee-scroll-wrapper,
+    .marquee-section,
+    .solution-section { width: 100%; }
+
+    /* ─── Marquee: driven by CSS vars ───────────────────────────── */
+    .marquee-scroll-wrapper { height: calc(var(--mq-h) + var(--mq-travel)); }
+    .marquee-section        { height: var(--mq-h); }
+    .marquee-text           { font-size: var(--mq-font); letter-spacing: var(--mq-ls); }
+
+    /* Hamburger — hidden at desktop/tablet */
+    .nav-hamburger { display: none; }
+
+    /* ══════════════════════════════════════════════════════════════
+       TABLET  ·  ≤ 900px
+       ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      :root {
+        --mq-h:      600px;
+        --mq-travel: 1400px;
+        --mq-font:   140px;
+        --mq-ls:     -2px;
+      }
+
+      /* Nav */
+      .nav {
+        width: calc(100% - 32px);
+        top: 16px;
+        padding: 0 20px;
+      }
+      .nav-logo { width: 180px; }
+      .nav-links a { padding: 8px 10px; font-size: 13px; }
+      .nav-cta { gap: 6px; }
+      .btn { height: 40px; padding: 0 14px; font-size: 13px; }
+
+      /* Hero */
+      .hero { height: 720px; }
+      .hero-visual {
+        width: 82%;
+        top: 108px;
+      }
+      .hero-visual img { height: 360px; }
+      .hero-content { top: 510px; width: 90%; }
+      .hero-h1 { font-size: 56px; letter-spacing: -1px; margin-bottom: 16px; }
+      .hero-subtitle { font-size: 14px; }
+
+      /* Marquee separator */
+      .marquee-sep { width: 14px; height: 14px; margin: 0 56px; top: -5px; }
+
+      /* Solution */
+      .solution-section { height: 820px; }
+      .solution-info { left: 40px; bottom: 40px; top: auto; width: 86%; }
+      .solution-h2 { font-size: 48px; max-width: 480px; }
+      .solution-tags, .solution-desc { font-size: 14px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       MOBILE  ·  ≤ 480px
+       ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      :root {
+        --mq-h:      340px;
+        --mq-travel: 900px;
+        --mq-font:   72px;
+        --mq-ls:     -1px;
+      }
+
+      /* ── Nav: hamburger ──────────────────────────────────────── */
+      .nav {
+        width: calc(100% - 24px);
+        top: 12px;
+        height: auto;
+        min-height: 52px;
+        padding: 10px 16px;
+        flex-wrap: wrap;
+        border-radius: 14px;
+      }
+      .nav-logo { width: auto; flex: 1; }
+
+      /* Links + CTA: hidden until open */
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        padding: 12px 0 6px;
+        list-style: none;
+      }
+      .nav-cta { display: none; }
+
+      .nav.is-open .nav-links { display: flex; }
+      .nav.is-open .nav-cta   { display: flex; width: 100%; padding: 8px 0 4px; gap: 8px; }
+      .nav.is-open .btn       { flex: 1; justify-content: center; height: 44px; }
+      .nav-links a            { font-size: 15px; padding: 11px 6px; width: 100%; }
+
+      /* Hamburger button */
+      .nav-hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
+        flex-shrink: 0;
+        border-radius: 8px;
+        transition: background 0.15s ease;
+      }
+      .nav-hamburger:hover        { background: rgba(255,255,255,0.08); }
+      .nav-hamburger:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+      .nav-hamburger span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: var(--color-text-primary);
+        border-radius: 2px;
+        transition: transform 0.24s ease, opacity 0.18s ease;
+        transform-origin: center;
+        pointer-events: none;
+      }
+      .nav.is-open .nav-hamburger span:nth-child(1) { transform: translateY(7px)  rotate(45deg);  }
+      .nav.is-open .nav-hamburger span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+      .nav.is-open .nav-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+      /* ── Hero: flex-column (override absolute children) ──────── */
+      .hero {
+        height: auto;
+        min-height: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      /* Pull hero-visual out of absolute flow */
+      .hero-visual {
+        position: relative;
+        top: auto; left: auto;
+        transform: none;
+        width: 94%;
+        height: auto;
+        margin-top: 72px; /* clear floating nav */
+        flex-shrink: 0;
+        mix-blend-mode: normal; /* reset on mobile — no black bg blending needed */
+        pointer-events: auto;
+        animation: anim-fade 0.8s ease-out 200ms both;
+      }
+      .hero-visual img   { height: 200px; object-fit: contain; background: var(--color-bg); }
+      .hero-visual::after { display: none; }
+
+      /* Pull hero-content out of absolute flow */
+      .hero-content {
+        position: relative;
+        top: auto; left: auto;
+        transform: none;
+        width: calc(100% - 32px);
+        margin-top: 16px;
+        text-align: center;
+      }
+      .hero-h1 {
+        font-size: 40px;
+        letter-spacing: -0.5px;
+        margin-bottom: 14px;
+        line-height: 1.0;
+        animation: anim-fade-up 0.8s ease-out 400ms both;
+      }
+      .hero-subtitle {
+        font-size: 13px;
+        animation: anim-fade-up 0.8s ease-out 600ms both;
+      }
+
+      /* ── Marquee ─────────────────────────────────────────────── */
+      .marquee-sep  { display: none; }
+      .marquee-item { padding-left: 40px; }
+
+      /* ── Solution ────────────────────────────────────────────── */
+      .solution-section {
+        height: auto;
+        min-height: 520px;
+        display: flex;
+        flex-direction: column;
+      }
+      .solution-bg {
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-size: cover;
+        background-position: center center;
+      }
+      .solution-info {
+        position: relative;
+        left: auto; top: auto;
+        width: 100%;
+        min-height: auto;
+        padding: 280px 20px 40px;
+      }
+      .solution-h2 { font-size: 34px; letter-spacing: -0.5px; max-width: 100%; }
+      .solution-tags { font-size: 13px; gap: 10px; flex-wrap: wrap; }
+      .solution-desc { font-size: 13px; max-width: 100%; }
+    }
+
+    /* ─── Section 3: Solution ────────────────────────────────────── */
+    .solution-section {
+      position: relative;
+      width: 100%;
+      height: 980px;
+      background: #131313;
+      border-bottom: 1px solid var(--color-border);
+      overflow: hidden;
+    }
+
+    /*
+     * Background layer — intentionally oversized (3853×1445) and offset
+     * so the visually interesting portion is framed in the 1440×980 window.
+     * Left: -1402px, Top: -114px per design spec.
+     * JS will nudge the `top` value on scroll for parallax (Phase: POLISH).
+     */
+    .solution-bg {
+      position: absolute;
+      width: 100%;
+      height: 120%;  /* taller than container so parallax travel doesn't show gaps */
+      left: 0;
+      top: -10%;  /* offset so parallax translateY has room above and below */
+      will-change: transform; /* parallax-ready */
+
+      background-image: url('Solution.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    /* 30% dark overlay — lifts text contrast */
+    .solution-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.30);
+      z-index: 1;
+    }
+
+    /* Info box — lower-left, 80px from left and bottom */
+    .solution-info {
+      position: absolute;
+      left: 80px;
+      bottom: 80px;
+      width: 673px;
+      min-height: 272px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+      z-index: 2;
+    }
+
+    .solution-h2 {
+      font-family: var(--font-heading);
+      font-size: 62px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #fafafa;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      max-width: 544px;
+    }
+
+    .solution-tags {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 16px;
+      color: #eeeeee;
+      line-height: 1.6;
+    }
+
+    .solution-tag-sep {
+      color: rgba(238, 238, 238, 0.35);
+      font-weight: 400;
+    }
+
+    .solution-desc {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      color: #eeeeee;
+      line-height: 1.6;
+      max-width: 673px;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero" aria-labelledby="hero-title">
+
+    <!-- ── Navigation ── -->
+    <nav class="nav" aria-label="Main navigation">
+
+      <a href="/" class="nav-logo" aria-label="Infralink — home">
+        <!-- Logo mark -->
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true" focusable="false">
+          <rect width="30" height="30" rx="7.5" fill="#1257fd"/>
+          <!-- Diamond core -->
+          <path d="M15 7L21 13V17L15 23L9 17V13L15 7Z"
+                fill="none" stroke="white" stroke-width="1.5" stroke-opacity="0.3"/>
+          <path d="M8.5 15L12.5 11L16.5 15L12.5 19L8.5 15Z"
+                fill="white" fill-opacity="0.92"/>
+          <!-- Node dot -->
+          <circle cx="21" cy="10" r="2.5" fill="#93c5fd"/>
+        </svg>
+        <span class="logo-wordmark">Infralink</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links-list" role="list">
+        <li><a href="/"           aria-current="page">Home</a></li>
+        <li><a href="/products"                      >Products</a></li>
+        <li><a href="/use-cases"                     >Use Cases</a></li>
+        <li><a href="/us"                            >Us</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <button class="btn btn-primary" type="button">Request a demo</button>
+        <button class="btn btn-outline" type="button">Log in</button>
+      </div>
+
+      <!-- Hamburger — visible only on mobile via CSS -->
+      <button class="nav-hamburger" type="button"
+              aria-label="Open navigation menu" aria-expanded="false"
+              aria-controls="nav-links-list">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+
+    </nav>
+
+    <!-- ── Hero Visual ── -->
+    <div class="hero-visual">
+      <img
+        src="city-hero-2.png"
+        width="926"
+        height="496"
+        alt="3D render of Singapore Marina Bay as a floating city island, representing digital infrastructure"
+        draggable="false"
+      />
+    </div>
+
+    <!-- ── Hero Content ── -->
+    <div class="hero-content">
+      <h1 class="hero-h1" id="hero-title">
+        digital backbone for<br>physical infrastructure
+      </h1>
+      <p class="hero-subtitle">
+        Backed by years of industry experience, we deliver digital solutions built for real-world operations.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ── Section 2: Marquee (scroll-driven) ── -->
+  <!--
+    .marquee-scroll-wrapper is taller than the visible section.
+    The section sticks to the viewport; JS maps the excess scroll
+    distance to a horizontal translation of the text track.
+  -->
+  <div class="marquee-scroll-wrapper" id="marqueeWrapper">
+    <section class="marquee-section" id="marqueeSection" aria-label="Tagline">
+
+      <!-- Vignette overlays (real elements so bg-color can transition) -->
+      <div class="marquee-vignette marquee-vignette-left"  aria-hidden="true"></div>
+      <div class="marquee-vignette marquee-vignette-right" aria-hidden="true"></div>
+
+      <div class="marquee-track" id="marqueeTrack" aria-hidden="true">
+        <div class="marquee-item">
+          <span class="marquee-text">connecting assets, data and operations</span>
+        </div>
+      </div>
+
+      <!-- Screen-reader label -->
+      <p style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">
+        Connecting assets, data and operations
+      </p>
+
+    </section>
+  </div>
+
+  <script>
+  (() => {
+    'use strict';
+
+    /* ═══════════════════════════════════════════════════════════════
+       UTILITIES
+       ═══════════════════════════════════════════════════════════════ */
+    const clamp        = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+    const isMobile     = () => window.innerWidth <= 480;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /** Read a px CSS custom property from :root as a number */
+    function cssVar(name) {
+      return parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue(name).trim(),
+        10
+      );
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       1. HAMBURGER MENU (mobile nav toggle)
+       ═══════════════════════════════════════════════════════════════ */
+    const nav        = document.querySelector('.nav');
+    const hamburger  = document.querySelector('.nav-hamburger');
+
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        const open = nav.classList.toggle('is-open');
+        hamburger.setAttribute('aria-expanded', String(open));
+        hamburger.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+      });
+
+      // Close on outside click
+      document.addEventListener('click', e => {
+        if (nav.classList.contains('is-open') && !nav.contains(e.target)) {
+          nav.classList.remove('is-open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          hamburger.setAttribute('aria-label', 'Open navigation menu');
+        }
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+          nav.classList.remove('is-open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          hamburger.setAttribute('aria-label', 'Open navigation menu');
+          hamburger.focus();
+        }
+      });
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       2. SCROLL-DRIVEN MARQUEE
+       ═══════════════════════════════════════════════════════════════ */
+    const marqueeWrapper  = document.getElementById('marqueeWrapper');
+    const marqueeSection  = document.getElementById('marqueeSection');
+    const marqueeTrack    = document.getElementById('marqueeTrack');
+
+    if (marqueeWrapper && marqueeSection && marqueeTrack) {
+
+      /* SCROLL_TRAVEL comes from the --mq-travel CSS var so it
+         stays in sync with the CSS wrapper height at every breakpoint. */
+      let SCROLL_TRAVEL = cssVar('--mq-travel') || 2200;
+
+      /* Cached text width — re-measured on fonts-ready and resize */
+      let marqueeTextWidth = 0;
+      let colorThreshold   = 0.42;
+
+      /* ── Measure text width + recalculate color threshold ─── */
+      function measureMarquee() {
+        marqueeTextWidth = marqueeTrack.scrollWidth;
+
+        const firstText = marqueeTrack.querySelector('.marquee-text');
+        if (!firstText || marqueeTextWidth === 0) return;
+        const cs = getComputedStyle(firstText);
+
+        const probe = Object.assign(document.createElement('span'), {
+          style: [
+            'position:fixed', 'top:-9999px', 'left:0',
+            `font-size:${cs.fontSize}`,
+            `font-family:${cs.fontFamily}`,
+            `font-weight:${cs.fontWeight}`,
+            'text-transform:uppercase',
+            `letter-spacing:${cs.letterSpacing}`,
+            'white-space:nowrap',
+            'visibility:hidden',
+            'pointer-events:none',
+          ].join(';'),
+        });
+        probe.textContent = 'connecting ';
+        document.body.appendChild(probe);
+        const connectingWidth = probe.offsetWidth;
+        document.body.removeChild(probe);
+
+        /* Start: text left-edge at viewport right-edge (fully off-screen)
+           End:   text right-edge 80px from viewport right-edge          */
+        const vw     = window.innerWidth;
+        const startX = vw;
+        const endX   = vw - 80 - marqueeTextWidth;
+
+        /* "assets" hits the left viewport edge when translateX = -(connectingWidth + 97)
+           Solve for progress: p = (-assetsOffset - startX) / (endX - startX)           */
+        const assetsOffset = connectingWidth + 97;
+        colorThreshold = clamp((-assetsOffset - startX) / (endX - startX), 0, 1);
+      }
+
+      /* Re-read travel + re-measure on resize (breakpoint may have changed) */
+      window.addEventListener('resize', () => {
+        SCROLL_TRAVEL = cssVar('--mq-travel') || 2200;
+        measureMarquee();
+        onMarqueeScroll();
+      }, { passive: true });
+
+      if (document.fonts?.ready) {
+        document.fonts.ready.then(measureMarquee);
+      } else {
+        window.addEventListener('load', measureMarquee);
+      }
+
+      /* ── Scroll handler ───────────────────────────────────── */
+      function onMarqueeScroll() {
+        const wrapperTop   = marqueeWrapper.getBoundingClientRect().top + window.scrollY;
+        const scrolledInto = window.scrollY - wrapperTop;
+        const progress     = clamp(scrolledInto / SCROLL_TRAVEL, 0, 1);
+
+        /* Interpolate from off-screen-right → stopped at 80px from right edge */
+        const vw      = window.innerWidth;
+        const startX  = vw;
+        const endX    = vw - 80 - marqueeTextWidth;
+        const currentX = startX + progress * (endX - startX);
+
+        marqueeTrack.style.transform = `translateX(${currentX}px)`;
+        marqueeSection.classList.toggle('is-blue', progress >= colorThreshold);
+      }
+
+      window.addEventListener('scroll', onMarqueeScroll, { passive: true });
+      onMarqueeScroll();
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       3. INTERSECTION OBSERVER — scroll-triggered fade-ins
+       ═══════════════════════════════════════════════════════════════ */
+    if (!reduceMotion) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      document.querySelectorAll('.anim-observe').forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.anim-observe').forEach(el => el.classList.add('is-visible'));
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       4. PARALLAX (rAF, 60fps, desktop-only)
+       ═══════════════════════════════════════════════════════════════ */
+    if (reduceMotion) return;
+
+    const heroVisual   = document.querySelector('.hero-visual');
+    const solutionBg   = document.getElementById('solutionBg');
+    const solutionSect = document.querySelector('.solution-section');
+
+    /* Wait for entry animations to finish before applying parallax
+       (longest: delay 600ms + duration 800ms = 1400ms) */
+    let parallaxReady = false;
+    setTimeout(() => { parallaxReady = true; }, 1450);
+
+    let ticking = false;
+
+    function applyParallax() {
+      const mobile  = isMobile();
+      const scrollY = window.scrollY;
+
+      /* ── Hero image parallax (desktop only) ────────────────── */
+      if (heroVisual) {
+        if (!mobile && parallaxReady) {
+          /* translateX(-50%) centres the absolutely-positioned element;
+             translateY adds the parallax nudge on top of that.           */
+          heroVisual.style.transform = `translateX(-50%) translateY(${scrollY * 0.22}px)`;
+        } else if (mobile) {
+          heroVisual.style.transform = '';
+        }
+      }
+
+      /* ── Solution bg parallax (desktop + tablet) ───────────── */
+      if (solutionBg && solutionSect) {
+        if (!mobile) {
+          const rect   = solutionSect.getBoundingClientRect();
+          const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+          solutionBg.style.transform = `translateY(${center * 0.28}px)`;
+        } else {
+          solutionBg.style.transform = '';
+        }
+      }
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(applyParallax); ticking = true; }
+    }, { passive: true });
+
+    /* Re-clear on resize (mobile ↔ desktop switch) */
+    window.addEventListener('resize', () => {
+      requestAnimationFrame(applyParallax);
+    }, { passive: true });
+
+    requestAnimationFrame(applyParallax);
+  })();
+  </script>
+
+  <!-- ── Section 3: Solution ── -->
+  <section class="solution-section" aria-labelledby="solution-title">
+
+    <!-- Parallax background — oversized (3853×1445), offset x:-1402 y:-114 per spec -->
+    <!-- Parallax motion (nudge top on scroll) wired up in POLISH step -->
+    <div class="solution-bg" id="solutionBg" aria-hidden="true"></div>
+
+    <!-- 30% dark overlay for text legibility -->
+    <div class="solution-overlay" aria-hidden="true"></div>
+
+    <!-- Info box: x:80, y:628 -->
+    <div class="solution-info">
+
+      <h2 class="solution-h2 anim-observe" id="solution-title">
+        See Everything,<br>In Real Time
+      </h2>
+
+      <div class="solution-tags anim-observe" role="list" aria-label="Features"
+           style="transition-delay: 120ms">
+        <span role="listitem">TWIN EDITOR</span>
+        <span class="solution-tag-sep" aria-hidden="true">|</span>
+        <span role="listitem">OPS CENTRE</span>
+        <span class="solution-tag-sep" aria-hidden="true">|</span>
+        <span role="listitem">24K CORE</span>
+      </div>
+
+      <p class="solution-desc anim-observe" style="transition-delay: 240ms">
+        Connect live data, systems, and assets into one operational layer —
+        giving teams real-time visibility, situational awareness, and faster
+        response across the built environment.
+      </p>
+
+    </div>
+
+  </section>
+
+
+</body>
+</html>
