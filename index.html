@@ -42,7 +42,7 @@
     /* ─── Hero Section ───────────────────────────────────────────── */
     .hero {
       position: relative;
-      width: 1440px;
+      width: 100%;
       height: 980px;
       background: var(--color-bg);
       border-bottom: 1px solid var(--color-border);
@@ -657,13 +657,138 @@
       .solution-desc { font-size: 13px; max-width: 100%; }
     }
 
-    /* ─── Section 3: Solution ────────────────────────────────────── */
-    .solution-section {
+    /* ─── Section 4: The Value (scroll-driven card animation) ───── */
+
+    /*
+     * Scroll mechanic (same pattern as marquee):
+     * .value-scroll-wrapper  — tall container that creates scroll room
+     * .value-section         — sticky, stays visible while cards animate
+     * JS maps extra scroll → translateX + rotate on each card
+     *
+     * Cards start off-screen right with initial rotation,
+     * slide left and straighten into final positions sequentially.
+     */
+    .value-scroll-wrapper {
       position: relative;
+      /* 980px visible + 3 × 600px travel per card */
+      height: calc(980px + 1800px);
+      width: 100%;
+    }
+
+    .value-section {
+      position: sticky;
+      top: 0;
       width: 100%;
       height: 980px;
+      background: #111111;
+      border-top: 1px solid #484848;
+      border-bottom: 1px solid #484848;
+      overflow: hidden;
+    }
+
+    /* Inner container — 1440px, centered */
+    .value-inner {
+      position: relative;
+      width: 1440px;
+      height: 100%;
+      margin: 0 auto;
+    }
+
+    /* Left column: title + desc */
+    .value-left {
+      position: absolute;
+      left: 80px;
+      top: 120px;
+      width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .value-h2 {
+      font-family: var(--font-heading);
+      font-size: 62px;
+      font-weight: 600;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin: 0;
+    }
+
+    .value-h2-white { color: #eeeeee; }
+    .value-h2-gray  { color: #7b7b7b; }
+
+    .value-desc {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      line-height: 1.6;
+      color: #7b7b7b;
+      max-width: 335px;
+      margin: 0;
+    }
+
+    /* Cards — right half, final resting positions (no rotation) */
+    .value-card {
+      position: absolute;
+      width: 447px;
+      background: #484848;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      padding: 0 24px 24px;
+      box-sizing: border-box;
+      will-change: transform;
+    }
+
+    /* Final X positions (where cards land after animation) */
+    /* Final top positions set by JS after measuring card heights */
+    .value-card-1, .value-card-2, .value-card-3 { left: 789px; }
+
+    .value-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      font-family: var(--font-heading);
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.1;
+      text-transform: uppercase;
+      color: #fafafa;
+    }
+
+    .value-card-num {
+      text-align: right;
+      min-width: 60px;
+    }
+
+    .value-card-body {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      line-height: 1.6;
+      color: #eeeeee;
+      margin: 0;
+    }
+
+    .value-card-line {
+      height: 1px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ─── Section 3: Solution ────────────────────────────────────── */
+    .solution-section {
+      width: 100%;
       background: #131313;
       border-bottom: 1px solid var(--color-border);
+    }
+
+    .solution-inner {
+      position: relative;
+      width: 1440px;
+      height: 980px;
+      margin: 0 auto;
       overflow: hidden;
     }
 
@@ -681,7 +806,7 @@
       top: -10%;  /* offset so parallax translateY has room above and below */
       will-change: transform; /* parallax-ready */
 
-      background-image: url('Solution.png');
+      background-image: url('Solution-2.png');
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
@@ -1054,45 +1179,185 @@
     }, { passive: true });
 
     requestAnimationFrame(applyParallax);
+
   })();
   </script>
 
   <!-- ── Section 3: Solution ── -->
   <section class="solution-section" aria-labelledby="solution-title">
+    <div class="solution-inner">
 
-    <!-- Parallax background — oversized (3853×1445), offset x:-1402 y:-114 per spec -->
-    <!-- Parallax motion (nudge top on scroll) wired up in POLISH step -->
-    <div class="solution-bg" id="solutionBg" aria-hidden="true"></div>
+      <!-- Background image -->
+      <div class="solution-bg" id="solutionBg" aria-hidden="true"></div>
 
-    <!-- 30% dark overlay for text legibility -->
-    <div class="solution-overlay" aria-hidden="true"></div>
+      <!-- Dark overlay -->
+      <div class="solution-overlay" aria-hidden="true"></div>
 
-    <!-- Info box: x:80, y:628 -->
-    <div class="solution-info">
+      <!-- Text: 80px from left, 80px from bottom -->
+      <div class="solution-info">
 
-      <h2 class="solution-h2 anim-observe" id="solution-title">
-        See Everything,<br>In Real Time
-      </h2>
+        <h2 class="solution-h2 anim-observe" id="solution-title">
+          See Everything,<br>In Real Time
+        </h2>
 
-      <div class="solution-tags anim-observe" role="list" aria-label="Features"
-           style="transition-delay: 120ms">
-        <span role="listitem">TWIN EDITOR</span>
-        <span class="solution-tag-sep" aria-hidden="true">|</span>
-        <span role="listitem">OPS CENTRE</span>
-        <span class="solution-tag-sep" aria-hidden="true">|</span>
-        <span role="listitem">24K CORE</span>
+        <div class="solution-tags anim-observe" role="list" aria-label="Features"
+             style="transition-delay: 120ms">
+          <span role="listitem">TWIN EDITOR</span>
+          <span class="solution-tag-sep" aria-hidden="true">|</span>
+          <span role="listitem">OPS CENTRE</span>
+          <span class="solution-tag-sep" aria-hidden="true">|</span>
+          <span role="listitem">24K CORE</span>
+        </div>
+
+        <p class="solution-desc anim-observe" style="transition-delay: 240ms">
+          Connect live data, systems, and assets into one operational layer —
+          giving teams real-time visibility, situational awareness, and faster
+          response across the built environment.
+        </p>
+
       </div>
 
-      <p class="solution-desc anim-observe" style="transition-delay: 240ms">
-        Connect live data, systems, and assets into one operational layer —
-        giving teams real-time visibility, situational awareness, and faster
-        response across the built environment.
-      </p>
-
     </div>
-
   </section>
 
+  <!-- ── Section 4: The Value (scroll-driven) ── -->
+  <div class="value-scroll-wrapper" id="valueWrapper">
+    <section class="value-section" id="valueSection" aria-labelledby="value-title">
+      <div class="value-inner">
+
+        <!-- Left: title + desc (sticky while cards animate) -->
+        <div class="value-left">
+          <h2 class="value-h2" id="value-title">
+            <span class="value-h2-white">The Value </span>
+            <span class="value-h2-gray">of a team that </span>
+            <span class="value-h2-white">understands the work</span>
+          </h2>
+          <p class="value-desc">
+            We combine built-environment expertise, product thinking, and delivery experience to turn complex project data into practical tools for execution, control, and better decision-making.
+          </p>
+        </div>
+
+        <!-- Cards: start off-screen right, slide in via JS -->
+        <div class="value-card value-card-1" id="valueCard1">
+          <div class="value-card-header">
+            <span>Domain Expertise</span>
+            <span class="value-card-num">01</span>
+          </div>
+          <p class="value-card-body">We design around real construction workflows, from cost and progress tracking to claims and change management.</p>
+          <div class="value-card-line"></div>
+        </div>
+
+        <div class="value-card value-card-2" id="valueCard2">
+          <div class="value-card-header">
+            <span>Product Thinking</span>
+            <span class="value-card-num">02</span>
+          </div>
+          <p class="value-card-body">We turn operational complexity into clear, usable tools that connect project data, BIM context, and reporting into one practical workflow.</p>
+          <div class="value-card-line"></div>
+        </div>
+
+        <div class="value-card value-card-3" id="valueCard3">
+          <div class="value-card-header">
+            <span>Delivery Impact</span>
+            <span class="value-card-num">03</span>
+          </div>
+          <p class="value-card-body">The result is better visibility, faster coordination, and stronger control over project progress, cost, and execution.</p>
+          <div class="value-card-line"></div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Value section: scroll-driven card slide-in ── -->
+  <script>
+  (() => {
+    'use strict';
+
+    const wrapper = document.getElementById('valueWrapper');
+    if (!wrapper) return;
+
+    /*
+     * All cards rotate from -15° → 0° and slide from off-screen right → resting position.
+     * Trigger: card 1 starts when the section has entered 80px into the viewport from below.
+     * Each card gets 500px of scroll travel, sequentially.
+     */
+    const cards = [
+      { el: document.getElementById('valueCard1') },
+      { el: document.getElementById('valueCard2') },
+      { el: document.getElementById('valueCard3') },
+    ];
+
+    const CARD_TRAVEL  = 500;   /* scroll px per card               */
+    const START_ROT    = -25;   /* initial rotation for every card  */
+    const OFF_X        = 900;   /* how far off-screen right (px)    */
+    const ENTRY_OFFSET = 80;    /* px into viewport before card 1 fires */
+    const GAP          = 46;    /* vertical gap between cards (px)  */
+    const TOP_OFFSET   = 140;   /* card 1 top from section top (px) */
+
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+    /* Set final vertical positions based on measured card heights */
+    function positionCards() {
+      let currentTop = TOP_OFFSET;
+      cards.forEach(card => {
+        if (!card.el) return;
+        card.el.style.top = currentTop + 'px';
+        /* Temporarily reset transform to measure natural height */
+        const prevTransform = card.el.style.transform;
+        card.el.style.transform = 'none';
+        const h = card.el.offsetHeight;
+        card.el.style.transform = prevTransform;
+        currentTop += h + GAP;
+      });
+    }
+
+    /* Cache wrapper's absolute top once, refresh on resize */
+    let wrapperAbsTop = wrapper.getBoundingClientRect().top + window.scrollY;
+    window.addEventListener('resize', () => {
+      wrapperAbsTop = wrapper.getBoundingClientRect().top + window.scrollY;
+      positionCards();
+      update();
+    }, { passive: true });
+
+    function update() {
+      const vh = window.innerHeight;
+
+      /*
+       * scrolledInto = how many px the user has scrolled past the wrapper top.
+       * Negative while the section is still approaching from below.
+       *
+       * The section bottom enters the viewport when the section top is at (vh - 980px).
+       * The section top enters 80px into viewport means section top = vh - 80px from screen bottom.
+       * → scrolledInto_trigger = -(vh - ENTRY_OFFSET) = -vh + ENTRY_OFFSET
+       */
+      const scrolledInto = window.scrollY - wrapperAbsTop;
+
+      /* Shift so that 0 = "section 80px into viewport" */
+      const adjusted = scrolledInto + (vh - ENTRY_OFFSET);
+
+      cards.forEach((card, i) => {
+        if (!card.el) return;
+
+        const start = i * CARD_TRAVEL;
+        const raw   = clamp((adjusted - start) / CARD_TRAVEL, 0, 1);
+        const p     = easeOutCubic(raw);
+
+        const tx  = OFF_X   * (1 - p);   /* slide right → 0 */
+        const rot = START_ROT * (1 - p); /* -15° → 0°        */
+
+        card.el.style.transform = `translateX(${tx}px) rotate(${rot}deg)`;
+      });
+    }
+
+    /* Position cards, then set initial off-screen state */
+    positionCards();
+    update();
+
+    window.addEventListener('scroll', update, { passive: true });
+  })();
+  </script>
 
 </body>
 </html>
