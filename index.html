@@ -394,13 +394,7 @@
     .solution-tags .solution-tag-sep:nth-child(4) { transition-delay: 100ms; }
     .solution-tags [role="listitem"]:nth-child(5)  { transition-delay: 200ms; }
 
-    /* ─── 4. Hover — solution info box ───────────────────────────── */
-    .solution-info {
-      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .solution-info:hover {
-      transform: translateY(-5px);
-    }
+    /* ─── 4. Solution info — parallax only, no hover ─────────────── */
 
     /* ─── 5. Buttons — improve active press ─────────────────────── */
     .btn-primary:active {
@@ -430,7 +424,6 @@
       .hero-subtitle   { animation: none; opacity: 1; }
 
       .anim-observe    { opacity: 1; transform: none; transition: none; }
-      .solution-info   { transition: none; }
       .btn             { transition: background 0.15s ease, color 0.15s ease; }
     }
 
@@ -863,22 +856,56 @@
       flex: 1;
       height: 1px;
       background: rgba(255, 255, 255, 0.15);
+      transform-origin: left center;
+      transform: scaleX(0);
+      transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .logo-subtitle-row .logo-subtitle-text:last-child {
+      opacity: 0;
+      transform: translateX(-24px);
+      transition: opacity 0.7s ease 1.0s, transform 0.7s ease 1.0s;
+    }
+
+    .logo-subtitle-row.sub-visible .logo-subtitle-line {
+      transform: scaleX(1);
+    }
+
+    .logo-subtitle-row.sub-visible .logo-subtitle-text:last-child {
+      opacity: 1;
+      transform: translateX(0);
     }
 
     .logo-tiles-wrapper {
-      position: relative;
-      /* row1(144) + gap(16) + row2(144) = 304 */
-      height: 304px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow: hidden;
     }
 
     .logo-row {
-      position: absolute;
-      display: flex;
-      gap: 16px;
+      overflow: hidden;
+      width: 100%;
     }
 
-    .logo-row-1 { top: 0;      left: 189px; } /* 80px base + 109px offset */
-    .logo-row-2 { top: 160px;  left: 80px; }
+    .logo-track {
+      display: flex;
+      gap: 16px;
+      width: max-content;
+      will-change: transform;
+    }
+
+    .logo-row-1 .logo-track { animation: logo-right 28s linear infinite; }
+    .logo-row-2 .logo-track { animation: logo-left  28s linear infinite; }
+
+    @keyframes logo-right {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
+    }
+    @keyframes logo-left {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
 
     .logo-tile {
       background: #1f1f1f;
@@ -1072,9 +1099,7 @@
       gap: 16px;
       align-items: flex-start;
       z-index: 2;
-      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .solution-info:hover { transform: translateY(-5px); }
 
     .solution-h2 {
       font-family: var(--font-heading);
@@ -1569,26 +1594,6 @@
         }
       }
 
-      /* ── Solution bg + info parallax ── */
-      solutionItems.forEach(item => {
-        const bg   = item.querySelector('.solution-bg');
-        const info = item.querySelector('.solution-info');
-        const rect      = item.getBoundingClientRect();
-        const itemH     = item.offsetHeight;
-        const viewH     = window.innerHeight;
-        const scrollRange = Math.max(1, itemH - viewH);
-        const scrolled  = Math.max(0, -rect.top);
-        const progress  = Math.min(1, scrolled / scrollRange);
-
-        if (!mobile) {
-          if (bg)   bg.style.transform   = `translateY(${progress * -30}%)`;
-          if (info) info.style.transform = `translateY(${progress * -260}px)`;
-        } else {
-          if (bg)   bg.style.transform   = '';
-          if (info) info.style.transform = '';
-        }
-      });
-
       ticking = false;
     }
 
@@ -1781,25 +1786,45 @@
       </div>
 
       <div class="logo-tiles-wrapper">
-        <!-- Row 1 — offset 109px right -->
+        <!-- Row 1 — scrolls right, tiles duplicated for seamless loop -->
         <div class="logo-row logo-row-1">
-          <div class="logo-tile"><img src="logos/logo50.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo51.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo55.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo53.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo54.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo56.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo50.png" alt="Partner logo"></div>
+          <div class="logo-track" aria-hidden="false">
+            <div class="logo-tile"><img src="logos/logo50.png" alt="Aetos"></div>
+            <div class="logo-tile"><img src="logos/logo51.png" alt="Frasers Hospitality"></div>
+            <div class="logo-tile"><img src="logos/logo55.png" alt="Changi Airport"></div>
+            <div class="logo-tile"><img src="logos/logo53.png" alt="NCS"></div>
+            <div class="logo-tile"><img src="logos/logo54.png" alt="MPA Singapore"></div>
+            <div class="logo-tile"><img src="logos/logo56.png" alt="Republic of Singapore Navy"></div>
+            <div class="logo-tile"><img src="logos/logo50.png" alt="Aetos"></div>
+            <!-- duplicate for seamless loop -->
+            <div class="logo-tile"><img src="logos/logo50.png" alt="Aetos"></div>
+            <div class="logo-tile"><img src="logos/logo51.png" alt="Frasers Hospitality"></div>
+            <div class="logo-tile"><img src="logos/logo55.png" alt="Changi Airport"></div>
+            <div class="logo-tile"><img src="logos/logo53.png" alt="NCS"></div>
+            <div class="logo-tile"><img src="logos/logo54.png" alt="MPA Singapore"></div>
+            <div class="logo-tile"><img src="logos/logo56.png" alt="Republic of Singapore Navy"></div>
+            <div class="logo-tile"><img src="logos/logo50.png" alt="Aetos"></div>
+          </div>
         </div>
-        <!-- Row 2 — normal position -->
+        <!-- Row 2 — scrolls left, tiles duplicated for seamless loop -->
         <div class="logo-row logo-row-2">
-          <div class="logo-tile"><img src="logos/logo53.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo56.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo54.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo51.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo50.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo55.png" alt="Partner logo"></div>
-          <div class="logo-tile"><img src="logos/logo50.png" alt="Partner logo"></div>
+          <div class="logo-track" aria-hidden="false">
+            <div class="logo-tile"><img src="logos/logo53.png" alt="NCS"></div>
+            <div class="logo-tile"><img src="logos/logo56.png" alt="Republic of Singapore Navy"></div>
+            <div class="logo-tile"><img src="logos/logo54.png" alt="MPA Singapore"></div>
+            <div class="logo-tile"><img src="logos/logo51.png" alt="Frasers Hospitality"></div>
+            <div class="logo-tile"><img src="logos/logo50.png" alt="Aetos"></div>
+            <div class="logo-tile"><img src="logos/logo55.png" alt="Changi Airport"></div>
+            <div class="logo-tile"><img src="logos/logo50.png" alt="Aetos"></div>
+            <!-- duplicate for seamless loop -->
+            <div class="logo-tile"><img src="logos/logo53.png" alt="NCS"></div>
+            <div class="logo-tile"><img src="logos/logo56.png" alt="Republic of Singapore Navy"></div>
+            <div class="logo-tile"><img src="logos/logo54.png" alt="MPA Singapore"></div>
+            <div class="logo-tile"><img src="logos/logo51.png" alt="Frasers Hospitality"></div>
+            <div class="logo-tile"><img src="logos/logo50.png" alt="Aetos"></div>
+            <div class="logo-tile"><img src="logos/logo55.png" alt="Changi Airport"></div>
+            <div class="logo-tile"><img src="logos/logo50.png" alt="Aetos"></div>
+          </div>
         </div>
       </div>
 
@@ -1989,6 +2014,66 @@
     update();
 
     window.addEventListener('scroll', update, { passive: true });
+  })();
+  </script>
+
+  <!-- ── Logo subtitle row: scroll-triggered line + text animation ── -->
+  <script>
+  (() => {
+    const row = document.querySelector('.logo-subtitle-row');
+    if (!row) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        row.classList.add('sub-visible');
+        io.disconnect();
+      }
+    }, { threshold: 0.5 });
+    io.observe(row);
+  })();
+  </script>
+
+  <!-- ── Solution parallax: bg slow, info fast ── -->
+  <script>
+  (() => {
+    const items  = Array.from(document.querySelectorAll('.solution-stack-item'));
+    const mobile = () => window.innerWidth <= 480;
+
+    function update() {
+      if (mobile()) {
+        items.forEach(item => {
+          const bg   = item.querySelector('.solution-bg');
+          const info = item.querySelector('.solution-info');
+          if (bg)   bg.style.transform   = '';
+          if (info) info.style.transform = '';
+        });
+        return;
+      }
+
+      const viewH = window.innerHeight;
+      items.forEach(item => {
+        const bg   = item.querySelector('.solution-bg');
+        const info = item.querySelector('.solution-info');
+        const rect      = item.getBoundingClientRect();
+        const itemH     = item.offsetHeight;
+        const inViewDist = itemH - viewH;
+
+        let progress;
+        if (inViewDist > 10) {
+          /* Sections 1 & 2: wrapper is taller than viewport, scroll-driven */
+          progress = Math.min(1, Math.max(0, -rect.top / inViewDist));
+        } else {
+          /* Section 3: wrapper = viewport height, animate during entry from below */
+          progress = Math.min(1, Math.max(0, 1 - rect.top / viewH));
+        }
+
+        if (bg)   bg.style.transform   = `translateY(${progress * -12}%)`;
+        if (info) info.style.transform = `translateY(${240 + progress * -800}px)`;
+      });
+    }
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
   })();
   </script>
 
